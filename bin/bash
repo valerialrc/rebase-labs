@@ -1,0 +1,8 @@
+docker run \
+  --rm \
+  --name rebase-labs \
+  -w /app \
+  -v $(pwd):/app \
+  -p 3000:3000 \
+  ruby \
+  bash -c "bundle install && ruby app.rb"
