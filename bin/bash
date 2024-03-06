@@ -2,23 +2,23 @@ docker network create rebase-labs
 
 docker run \
   --rm \
+  --name rebase-labs-database \
+  -v $(pwd):/app \
+  -p 5432:5432 \
+  --network rebase-labs \
+  -e POSTGRES_HOST_AUTH_METHOD=trust \
+  -e POSTGRES_USER=rebase \
+  -e POSTGRES_PASSWORD=123456 \
+  -d \
+  postgres
+
+docker run \
+  --rm \
   --name rebase-labs-server \
   -w /app \
   -v $(pwd):/app \
   -p 3000:3000 \
   --network rebase-labs \
-  -d \
+  -d
   ruby \
-  bash -c "bundle install && ruby server.rb"
-
-  docker run \
-  --rm \
-  --name rebase-labs-database \
-  -p 5432:5432 \
-  --network rebase-labs \
-  -e POSTGRES_HOST_AUTH_METHOD=trust \
-  -d \
-  postgres
-
-  docker ps
-
+  bash -c "bundle install && ruby import_from_csv.rb && ruby server.rb"

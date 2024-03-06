@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'puma'
 gem 'rack'
 gem 'rackup'
+gem 'pg'
 
 group :development, :test do
   gem 'rack-test'
