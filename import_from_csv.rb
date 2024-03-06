@@ -33,6 +33,8 @@ conn.exec(<<-SQL)
   )
 SQL
 
+insert_values = []
+
 rows = CSV.read("./data.csv", col_sep: ';', headers: true)
 
 rows.each do |row|
@@ -53,10 +55,14 @@ rows.each do |row|
   exam_limits = row['limites tipo exame']
   exam_result = row['resultado tipo exame']
 
-  conn.exec_params(<<-SQL, [patient_cpf, patient_name, patient_email, patient_birthdate, patient_address, patient_city, patient_state, doctor_crm, doctor_crm_state, doctor_name, doctor_email, result_token, exam_date, exam_type, exam_limits, exam_result])
-    INSERT INTO exams (patient_cpf, patient_name, patient_email, patient_birthdate, patient_address, patient_city, patient_state, doctor_crm, doctor_crm_state, doctor_name, doctor_email, result_token, exam_date, exam_type, exam_limits, exam_result)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-  SQL
+  insert_values << "(#{conn.escape_literal(patient_cpf)}, #{conn.escape_literal(patient_name)}, #{conn.escape_literal(patient_email)}, #{conn.escape_literal(patient_birthdate)}, #{conn.escape_literal(patient_address)}, #{conn.escape_literal(patient_city)}, #{conn.escape_literal(patient_state)}, #{conn.escape_literal(doctor_crm)}, #{conn.escape_literal(doctor_crm_state)}, #{conn.escape_literal(doctor_name)}, #{conn.escape_literal(doctor_email)}, #{conn.escape_literal(result_token)}, #{conn.escape_literal(exam_date)}, #{conn.escape_literal(exam_type)}, #{conn.escape_literal(exam_limits)}, #{conn.escape_literal(exam_result)})"
 end
+
+insert_query = <<-SQL
+  INSERT INTO exams (patient_cpf, patient_name, patient_email, patient_birthdate, patient_address, patient_city, patient_state, doctor_crm, doctor_crm_state, doctor_name, doctor_email, result_token, exam_date, exam_type, exam_limits, exam_result)
+  VALUES #{insert_values.join(', ')}
+SQL
+
+conn.exec(insert_query)
 
 conn.close
