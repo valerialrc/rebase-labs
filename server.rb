@@ -19,7 +19,7 @@ get '/hello' do
   'Hello world!'
 end
 
-Rack::Handler::Puma.run(
+Rackup::Handler::Puma.run(
   Sinatra::Application,
   Port: 3000,
   Host: '0.0.0.0'
