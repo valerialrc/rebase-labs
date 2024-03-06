@@ -19,6 +19,6 @@ docker run \
   -v $(pwd):/app \
   -p 3000:3000 \
   --network rebase-labs \
-  -d
+  -d \
   ruby \
   bash -c "bundle install && ruby import_from_csv.rb && ruby server.rb"
