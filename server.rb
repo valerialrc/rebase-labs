@@ -24,10 +24,6 @@ get '/tests' do
   get_data_from_database
 end
 
-get '/hello' do
-  'Hello world!'
-end
-
 if __FILE__ == $0
   Rack::Handler::Puma.run(
     Sinatra::Application,
