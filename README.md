@@ -9,6 +9,12 @@ bin/bash
 ```
 
 ## Testar
+Execute o container do servidor:
+```bash
+docker exec -it rebase-labs-server bash
+```
+
+Digite o comando:
 ```bash
 rspec
 ```
