@@ -20,8 +20,15 @@ def get_data_from_database
 end
 
 get '/tests' do
+  # response.headers['Access-Control-Allow-Origin'] = '*'
+
   content_type :json
   get_data_from_database
+end
+
+get '/home' do
+  content_type 'text/html'
+  File.open('index.html')
 end
 
 if __FILE__ == $0
