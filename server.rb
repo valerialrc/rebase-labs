@@ -3,27 +3,38 @@ require 'rack/handler/puma'
 require 'pg'
 require 'json'
 
+DB_CONFIG = {
+  dbname: 'postgres',
+  user: 'rebase',
+  password: '123456',
+  host: 'rebase-labs-database',
+  port: 5432
+}
+
+def get_details_by_token(token)
+  conn = PG.connect(DB_CONFIG)
+  result = conn.exec("SELECT * FROM exams WHERE result_token = '#{token}'")
+  conn.close
+  result.map(&:to_h).to_json
+end
+
 def get_data_from_database
-  db_config = {
-    dbname: 'postgres',
-    user: 'rebase',
-    password: '123456',
-    host: 'rebase-labs-database',
-    port: 5432
-  }
-  conn = PG.connect(db_config)
+  conn = PG.connect(DB_CONFIG)
   result = conn.exec('SELECT * FROM exams')
   conn.close
-
-  data = result.map { |row| row.to_h }
-  data.to_json
+  result.map(&:to_h).to_json
 end
 
 get '/tests' do
-  # response.headers['Access-Control-Allow-Origin'] = '*'
-
+  response.headers['Access-Control-Allow-Origin'] = '*'
   content_type :json
   get_data_from_database
+end
+
+get '/tests/:token' do
+  content_type :json
+  token = params[:token]
+  get_details_by_token(token)
 end
 
 get '/home' do
