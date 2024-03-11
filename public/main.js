@@ -42,7 +42,7 @@ function renderTestDetails(token) {
       const title = document.createElement('h2');
       title.textContent = `Resultado do exame ${token}`;
       detailsDiv.appendChild(title);
-      
+
       const detailsList = document.createElement('ul');
 
       const commonDetails = ['patient_name', 'patient_cpf', 'patient_email',
@@ -54,17 +54,23 @@ function renderTestDetails(token) {
           listItem.innerHTML = `<strong>${key.replace('_', ' ').toUpperCase()}:</strong> ${data[0][key]}`;
           detailsList.appendChild(listItem);
       });
-      
+
       data.forEach(test => {
-              const examTypes = Object.keys(test).filter(key => key.startsWith('exam_'));
-      examTypes.forEach(type => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        const detailsExam = document.createElement('ul');
+
+        const examTypes = Object.keys(test).filter(key => key.startsWith('exam_') && key !== 'exam_date');
+        examTypes.forEach(type => {
           const listItem = document.createElement('li');
           listItem.innerHTML = `<strong>${type.replace('exam_', '').toUpperCase()}:</strong> ${test[type]}`;
-          detailsList.appendChild(listItem);
-      });
-    })
-
-      
+          detailsExam.appendChild(listItem);
+        });
+        
+        card.appendChild(detailsExam);
+        detailsList.appendChild(card);
+      })
 
       const backButton = document.createElement('button');
       backButton.textContent = 'Voltar';
