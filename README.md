@@ -22,3 +22,11 @@ rspec
 ```bash
 /tests
 ```
+
+```bash
+/tests/:token
+```
+
+```bash
+/home
+```
