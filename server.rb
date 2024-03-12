@@ -42,6 +42,11 @@ get '/home' do
   File.open('index.html')
 end
 
+get '/main.js' do
+  content_type 'application/javascript'
+  File.open('main.js')
+end
+
 if __FILE__ == $0
   Rack::Handler::Puma.run(
     Sinatra::Application,

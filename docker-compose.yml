@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  rebase-labs-database:
+    image: postgres
+    container_name: rebase-labs-database
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=rebase
+      - POSTGRES_PASSWORD=123456
+    networks:
+      - rebase-labs
+
+  rebase-labs-server:
+    image: ruby
+    container_name: rebase-labs-server
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    command: bash -c "bundle install && ruby import_from_csv.rb && ruby server.rb"
+    networks:
+      - rebase-labs
+
+  chrome:
+    image: selenium/standalone-chrome
+    container_name: chrome
+    ports:
+      - "4444:4444"
+    networks:
+      - rebase-labs
+
+networks:
+  rebase-labs:
+    driver: bridge
