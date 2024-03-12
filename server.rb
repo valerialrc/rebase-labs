@@ -13,7 +13,7 @@ DB_CONFIG = {
 
 def get_details_by_token(token)
   conn = PG.connect(DB_CONFIG)
-  result = conn.exec("SELECT * FROM exams WHERE result_token = '#{token}'")
+  result = conn.exec("SELECT * FROM exams WHERE result_token ILIKE '#{token}'")
   conn.close
   result.map(&:to_h).to_json
 end

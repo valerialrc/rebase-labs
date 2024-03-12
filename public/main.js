@@ -67,7 +67,7 @@ function renderTestDetails(token) {
           listItem.innerHTML = `<strong>${type.replace('exam_', '').toUpperCase()}:</strong> ${test[type]}`;
           detailsExam.appendChild(listItem);
         });
-        
+
         card.appendChild(detailsExam);
         detailsList.appendChild(card);
       })
@@ -86,5 +86,19 @@ function renderTestDetails(token) {
     })
     .catch(error => console.error(error));
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const searchForm = document.getElementById('test-form');
+  searchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const tokenInput = document.getElementById('token').value;
+    if (!tokenInput) {
+        alert('Por favor, insira um token válido.');
+        return;
+    }
+    renderTestDetails(tokenInput);
+  });
+});
 
 window.onload = fetchDataAndRender;
