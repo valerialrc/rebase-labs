@@ -32,6 +32,7 @@ get '/tests' do
 end
 
 get '/tests/:token' do
+  response.headers['Access-Control-Allow-Origin'] = '*'
   content_type :json
   token = params[:token]
   get_details_by_token(token)
@@ -40,11 +41,6 @@ end
 get '/home' do
   content_type 'text/html'
   File.open('index.html')
-end
-
-get '/main.js' do
-  content_type 'application/javascript'
-  File.open('main.js')
 end
 
 if __FILE__ == $0

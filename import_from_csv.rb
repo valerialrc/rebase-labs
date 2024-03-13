@@ -1,6 +1,14 @@
 require 'csv'
 require 'pg'
 
+def table_exists?(conn)
+  result = conn.exec("SELECT EXISTS (
+                      SELECT FROM information_schema.tables 
+                      WHERE table_name = 'exams'
+                      )")
+  result.getvalue(0, 0) == 't' # 't' é o valor retornado se a tabela existir
+end
+
 db_config = {
   dbname: 'postgres',
   user: 'rebase',
@@ -10,6 +18,12 @@ db_config = {
 }
 
 conn = PG.connect(db_config)
+
+if table_exists?(conn)
+  puts "A tabela 'exams' já existe. Interrompendo o script."
+  conn.close
+  exit
+end
 
 conn.exec(<<-SQL)
   CREATE TABLE IF NOT EXISTS exams (

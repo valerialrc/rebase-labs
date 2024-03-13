@@ -1,3 +1,4 @@
+# spec/spec_helper.rb
 require 'capybara/dsl'
 require 'selenium-webdriver'
 require './server.rb'
@@ -5,15 +6,12 @@ require './server.rb'
 Capybara.app = Sinatra::Application
 
 Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(app,
-    browser: :remote,
-    url: 'http://chrome:4444/wd/hub',
-    options: Selenium::WebDriver::Chrome::Options.new(args: ['headless', 'disable-gpu'])
-  )
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument('--headless') # Executar o Chrome em modo headless
+  options.add_argument('--no-sandbox') # Necessário para execução no Docker
+  options.add_argument('--disable-dev-shm-usage') # Necessário para execução no Docker
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
-
-Capybara.app_host = 'http://rebase-labs-server:3000'
-
 Capybara.default_driver = :selenium
 Capybara.javascript_driver = :selenium
 Capybara.server = :puma, { Silent: true }
