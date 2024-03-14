@@ -15,7 +15,34 @@ def get_details_by_token(token)
   conn = PG.connect(DB_CONFIG)
   result = conn.exec("SELECT * FROM exams WHERE result_token ILIKE '#{token}'")
   conn.close
-  result.map(&:to_h).to_json
+
+  return '[]' if result.ntuples.zero?
+
+  exam = {
+    "result_token": result[0]['result_token'],
+    "exam_date": result[0]['exam_date'],
+    "patient_cpf": result[0]['patient_cpf'],
+    "patient_name": result[0]['patient_name'],
+    "patient_email": result[0]['patient_email'],
+    "patient_birthdate": result[0]['patient_birthdate'],
+    "patient_address": result[0]['patient_address'],
+    "patient_city": result[0]['patient_city'],
+    "patient_state": result[0]['patient_state'],
+    "doctor": {
+      "doctor_crm": result[0]['doctor_crm'],
+      "doctor_crm_state": result[0]['doctor_crm_state'],
+      "doctor_name": result[0]['doctor_name']
+    },
+    "tests": result.map do |row|
+      {
+        "type": row['exam_type'],
+        "limits": row['exam_limits'].split('-').join(' to '),
+        "result": row['exam_result']
+      }
+    end
+  }
+
+    exam.to_json
 end
 
 def get_data_from_database

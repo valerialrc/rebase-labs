@@ -47,24 +47,30 @@ function renderTestDetails(token) {
 
       const commonDetails = ['patient_name', 'patient_cpf', 'patient_email',
                              'patient_birthdate', 'patient_address', 'patient_city',
-                             'patient_state', 'doctor_crm', 'doctor_crm_state',
-                             'doctor_name', 'doctor_email', 'exam_date'];
+                             'patient_state', 'exam_date'];
       commonDetails.forEach(key => {
           const listItem = document.createElement('li');
-          listItem.innerHTML = `<strong>${key.replace('_', ' ').toUpperCase()}:</strong> ${data[0][key]}`;
+          listItem.innerHTML = `<strong>${key.replace('_', ' ').toUpperCase()}:</strong> ${data[key]}`;
           detailsList.appendChild(listItem);
       });
 
-      data.forEach(test => {
+      const doctorDetails = ['doctor_crm', 'doctor_crm_state', 'doctor_name']
+      doctorDetails.forEach(key => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<strong>${key.replace(/_/g, ' ').toUpperCase()}:</strong> ${data['doctor'][key]}`;
+        detailsList.appendChild(listItem);
+      });
+
+      data['tests'].forEach(test => {
         const card = document.createElement('div');
         card.classList.add('card');
 
         const detailsExam = document.createElement('ul');
 
-        const examTypes = Object.keys(test).filter(key => key.startsWith('exam_') && key !== 'exam_date');
-        examTypes.forEach(type => {
+        const testDetails = ['type', 'limits', 'result']
+        testDetails.forEach(key => {
           const listItem = document.createElement('li');
-          listItem.innerHTML = `<strong>${type.replace('exam_', '').toUpperCase()}:</strong> ${test[type]}`;
+          listItem.innerHTML = `<strong>${key.replace('_', ' ').toUpperCase()}:</strong> ${test[key]}`;
           detailsExam.appendChild(listItem);
         });
 

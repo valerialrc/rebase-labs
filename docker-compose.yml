@@ -21,6 +21,8 @@ services:
     ports:
       - "3000:3000"
     command: bash -c "bundle install && ruby import_from_csv.rb && ruby server.rb"
+    depends_on:
+      - rebase-labs-database
 
 volumes:
   rubygems:
