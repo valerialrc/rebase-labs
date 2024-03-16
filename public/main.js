@@ -107,4 +107,27 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+document.getElementById('csv-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  const fileInput = document.getElementById('csv-file');
+  const file = fileInput.files[0];
+  
+  const formData = new FormData();
+  formData.append('csv-file', file);
+
+  fetch('/import', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Upload do CSV realizado com sucesso!');
+    } else {
+      console.error('Erro ao fazer upload do CSV.');
+    }
+  })
+  .catch(error => console.error('Erro ao fazer upload do CSV:', error));
+});
+
 window.onload = fetchDataAndRender;

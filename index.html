@@ -4,6 +4,13 @@
 <body>
   <div id="test-list"> 
     <h1>Exames</h1>
+
+    <h3>Importar CSV</h3>
+    <form id="csv-form" action="/import" method="POST" enctype="multipart/form-data">
+      <input type="file" id="csv-file" name="csv_file">
+      <button id="import-button" type="submit">Importar</button>
+    </form>
+
     <form id="test-form">
       <label for="token">Token do exame:</label>
       <input type="text" id="token" name="token">
