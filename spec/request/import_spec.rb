@@ -9,8 +9,12 @@ RSpec.describe "CSV Upload", type: :feature do
     Sinatra::Application
   end
 
+  before(:each) do
+    ENV['RACK_ENV'] = 'test' # Define o ambiente como "test" antes de cada teste
+  end
+
   it "allows uploading a CSV file" do
-    post '/import', csv_file: Rack::Test::UploadedFile.new('data.csv', 'text/csv')
+    post '/import', csv_file: Rack::Test::UploadedFile.new('./data.csv', 'text/csv')
     
     expect(last_response).to be_ok
     expect(last_response.body).to include('Arquivo CSV importado com sucesso.')

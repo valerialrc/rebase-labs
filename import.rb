@@ -5,28 +5,6 @@ require_relative 'db_config.rb'
 def import_csv_to_database(csv_data)
   conn = PG.connect(db_config)
 
-  conn.exec(<<-SQL)
-    CREATE TABLE IF NOT EXISTS exams (
-      id SERIAL PRIMARY KEY,
-      patient_cpf VARCHAR(14),
-      patient_name VARCHAR(100),
-      patient_email VARCHAR(100),
-      patient_birthdate DATE,
-      patient_address VARCHAR(255),
-      patient_city VARCHAR(100),
-      patient_state VARCHAR(100),
-      doctor_crm VARCHAR(20),
-      doctor_crm_state VARCHAR(2),
-      doctor_name VARCHAR(100),
-      doctor_email VARCHAR(100),
-      result_token VARCHAR(10),
-      exam_date DATE,
-      exam_type VARCHAR(100),
-      exam_limits VARCHAR(20),
-      exam_result VARCHAR(255)
-    )
-  SQL
-
   insert_values = []
 
   rows = csv_data

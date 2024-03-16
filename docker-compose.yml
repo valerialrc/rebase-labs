@@ -32,9 +32,10 @@ services:
       - rubygems:/user/local/bundle
     ports:
       - "3000:3000"
-    command: bash -c "bundle install && ruby import_from_csv.rb data.csv && ruby server.rb"
+    command: bash -c "bundle install && ruby prepare_database.rb data.csv && ruby server.rb"
     depends_on:
       - rebase-labs-database
+      - rebase-labs-database-test
 
 volumes:
   rubygems:
