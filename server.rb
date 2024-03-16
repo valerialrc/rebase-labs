@@ -2,17 +2,12 @@ require 'sinatra'
 require 'rack/handler/puma'
 require 'pg'
 require 'json'
-
-DB_CONFIG = {
-  dbname: 'postgres',
-  user: 'rebase',
-  password: '123456',
-  host: 'rebase-labs-database',
-  port: 5432
-}
+require 'csv'
+require_relative 'import.rb'
+require_relative 'db_config.rb'
 
 def get_details_by_token(token)
-  conn = PG.connect(DB_CONFIG)
+  conn = PG.connect(db_config)
   result = conn.exec("SELECT * FROM exams WHERE result_token ILIKE '#{token}'")
   conn.close
 
@@ -46,7 +41,7 @@ def get_details_by_token(token)
 end
 
 def get_data_from_database
-  conn = PG.connect(DB_CONFIG)
+  conn = PG.connect(db_config)
   result = conn.exec('SELECT * FROM exams')
   conn.close
   result.map(&:to_h).to_json
@@ -68,6 +63,22 @@ end
 get '/home' do
   content_type 'text/html'
   File.open('index.html')
+end
+
+post '/import' do
+  begin
+    data = params[:csv_file][:tempfile]
+
+    csv_content = CSV.read(data, col_sep: ';', headers: true)
+
+    import_csv_to_database(csv_content)
+    
+    "Arquivo CSV importado com sucesso."
+  rescue StandardError => e
+    status 500
+    "Erro ao importar o arquivo CSV: #{e.message}"
+  end
+
 end
 
 if __FILE__ == $0

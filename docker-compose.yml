@@ -3,9 +3,21 @@ services:
     image: postgres
     container_name: rebase-labs-database
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./data/db_dev:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=rebase
+      - POSTGRES_PASSWORD=123456
+
+  rebase-labs-database-test:
+    image: postgres
+    container_name: rebase-labs-database-test
+    volumes:
+      - ./data/db_test:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=rebase
@@ -20,7 +32,7 @@ services:
       - rubygems:/user/local/bundle
     ports:
       - "3000:3000"
-    command: bash -c "bundle install && ruby import_from_csv.rb && ruby server.rb"
+    command: bash -c "bundle install && ruby import_from_csv.rb data.csv && ruby server.rb"
     depends_on:
       - rebase-labs-database
 
