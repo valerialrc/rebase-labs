@@ -32,10 +32,16 @@ services:
       - rubygems:/user/local/bundle
     ports:
       - "3000:3000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
     command: bash -c "bundle install && ruby prepare_database.rb data.csv && ruby server.rb"
     depends_on:
       - rebase-labs-database
       - rebase-labs-database-test
+      - redis
+
+  redis:
+    image: redis
 
 volumes:
   rubygems:

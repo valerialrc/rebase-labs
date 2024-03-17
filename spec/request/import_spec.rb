@@ -1,4 +1,3 @@
-require './server.rb'
 require 'rack/test'
 require 'csv'
 
@@ -7,10 +6,6 @@ RSpec.describe "CSV Upload", type: :feature do
 
   def app
     Sinatra::Application
-  end
-
-  before(:each) do
-    ENV['RACK_ENV'] = 'test' # Define o ambiente como "test" antes de cada teste
   end
 
   it "allows uploading a CSV file" do

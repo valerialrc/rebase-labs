@@ -3,8 +3,8 @@ require 'rack/handler/puma'
 require 'pg'
 require 'json'
 require 'csv'
-require_relative 'import.rb'
 require_relative 'db_config.rb'
+require_relative 'import_csv_job.rb'
 
 def get_details_by_token(token)
   conn = PG.connect(db_config)
@@ -71,8 +71,10 @@ post '/import' do
 
     csv_content = CSV.read(data, col_sep: ';', headers: true)
 
-    import_csv_to_database(csv_content)
-    
+    data_hash = csv_content.map(&:to_h)
+
+    CSVImportJob.perform_async(data_hash)
+
     "Arquivo CSV importado com sucesso."
   rescue StandardError => e
     status 500

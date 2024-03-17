@@ -114,7 +114,7 @@ document.getElementById('csv-form').addEventListener('submit', function(event) {
   const file = fileInput.files[0];
   
   const formData = new FormData();
-  formData.append('csv-file', file);
+  formData.append('csv_file', file);
 
   fetch('/import', {
     method: 'POST',
@@ -124,6 +124,7 @@ document.getElementById('csv-form').addEventListener('submit', function(event) {
     if (response.ok) {
       console.log('Upload do CSV realizado com sucesso!');
     } else {
+      console.log(response)
       console.error('Erro ao fazer upload do CSV.');
     }
   })

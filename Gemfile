@@ -5,6 +5,7 @@ gem 'puma'
 gem 'rack'
 gem 'rackup'
 gem 'pg'
+gem 'sidekiq', '~> 7.2'
 
 group :development, :test do
   gem 'rack-test'
