@@ -1,7 +1,21 @@
 # Rebase Labs
 
-Projeto desenvolvido durante o Rebase Labs ofertado para a turma 11 do TreinaDev.
-Importa dados de um arquivo csv para o banco de dados da aplicação e retorna um endpoint com os dados.
+Projeto desenvolvido durante o Rebase Labs, ofertado para a turma 11 do TreinaDev.
+
+A finalidade do sistema é compor uma interface de consulta à resultados de exames médicos. O banco de dados do sistema é previamente populado através de um arquivo CSV. O usuário final pode também importar outros arquivos CSVs com resultados de exames, contanto que o arquivo obedeça à configuração padrão (checar o arquivo ['data.csv'](https://github.com/valerialrc/rebase-labs/blob/main/data.csv) na raiz deste projeto). É possível pesquisar exames através do seu Token e também acessá-los diretamente clicando em um Token da lista na home.
+
+## Tecnologias
+- Ruby
+- Sinatra
+- Puma
+- Postgres
+- Rspec
+- Capybara
+- Selenium Webdriver
+- Docker Compose
+
+## Requisito
+Para iniciar a instalação do sistema, é necessário instalar o [Docker Compose](https://docs.docker.com/compose/).
 
 ## Criar containers
 ```bash
@@ -20,13 +34,17 @@ rspec
 ```
 ## Endpoints
 ```bash
-/tests
+GET /tests
 ```
 
 ```bash
-/tests/:token
+GET /tests/:token
 ```
 
 ```bash
-/home
+GET /home
+```
+
+```bash
+POST /import
 ```
