@@ -8,10 +8,14 @@ A finalidade do sistema é compor uma interface de consulta à resultados de exa
 - Ruby
 - Sinatra
 - Puma
+- Rack
+- Rackup
 - Postgres
 - Rspec
 - Capybara
 - Selenium Webdriver
+- Sidekiq
+- Redix
 - Docker Compose
 
 ## Requisito
@@ -32,6 +36,12 @@ Digite o comando:
 ```bash
 rspec
 ```
+
+## Verificar enfileiramento de Jobs
+```bash
+docker-compose exec rebase-labs-server sidekiq -r ./import_csv_job.rb 
+```
+
 ## Endpoints
 ```bash
 GET /tests
