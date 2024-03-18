@@ -1,7 +1,7 @@
 require 'rack/test'
 require 'csv'
 
-RSpec.describe "CSV Upload", type: :feature do
+RSpec.describe "CSV Upload" do
   include Rack::Test::Methods
 
   def app

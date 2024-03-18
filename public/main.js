@@ -122,11 +122,17 @@ document.getElementById('csv-form').addEventListener('submit', function(event) {
   })
   .then(response => {
     if (response.ok) {
-      console.log('Upload do CSV realizado com sucesso!');
+      return response.text();
     } else {
       console.log(response)
-      console.error('Erro ao fazer upload do CSV.');
+      return response.text();
     }
+  })
+  .then(importResponse => {
+    const responseElement = document.createElement('p');
+    responseElement.textContent = importResponse;
+    document.getElementById('response-container').appendChild(responseElement);
+    console.log('Upload do CSV realizado com sucesso!');
   })
   .catch(error => console.error('Erro ao fazer upload do CSV:', error));
 });

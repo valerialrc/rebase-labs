@@ -30,19 +30,19 @@ button {
 button:hover {
   background-color: #45a049;
 }
-
 .card {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 10px;
   display: inline-block;
 }
-
 a {
   text-decoration: none;
   color: inherit;
 }
-
 a:hover {
+  color: #45a049;
+}
+#response-container {
   color: #45a049;
 }
